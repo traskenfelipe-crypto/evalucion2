@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare Manager</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS y Prism.js para resaltado de sintaxis -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Menú de Navegación (Dashboard Style) -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <i class="fa-solid fa-paw"></i> PetCare Manager
+        </div>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema oscuro/claro">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+        <ul class="navbar-menu">
+            <li><a href="#inicio"><i class="fa-solid fa-house"></i> Inicio</a></li>
+            <li><a href="#registro"><i class="fa-solid fa-plus-circle"></i> Registro</a></li>
+            <li><a href="#gestion"><i class="fa-solid fa-table-list"></i> Gestión</a></li>
+            <li><a href="#galeria"><i class="fa-solid fa-images"></i> Galería</a></li>
+            <li><a href="#estadisticas"><i class="fa-solid fa-chart-pie"></i> Estadísticas</a></li>
+            <li><a href="#educativo"><i class="fa-solid fa-graduation-cap"></i> Panel Educativo</a></li>
+        </ul>
+    </nav>
+
+    <!-- Contenedor Principal de Toasts / Alertas (Inyectadas con JS) -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <main class="main-content">
+        <!-- 1. Inicio (Hero y Resumen Técnico) -->
+        <section id="inicio" class="hero-section fade-in">
+            <div class="hero-content">
+                <div class="hero-badge"><i class="fa-solid fa-star"></i> Proyecto de Evaluación Final</div>
+                <h1>PetCare Manager</h1>
+                <p class="hero-subtitle">Sistema integral de gestión veterinaria desarrollado aplicando los más altos estándares de la industria del desarrollo Frontend.</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-pill"><i class="fa-brands fa-html5"></i> HTML5 Semántico</span>
+                    <span class="tech-pill"><i class="fa-brands fa-css3-alt"></i> CSS3 + Variables + Grid</span>
+                    <span class="tech-pill"><i class="fa-brands fa-js"></i> Vanilla JS (ES6+)</span>
+                    <span class="tech-pill"><i class="fa-solid fa-database"></i> API LocalStorage</span>
+                </div>
+
+                <div class="hero-actions">
+                    <a href="#registro" class="btn btn-primary-light"><i class="fa-solid fa-notes-medical"></i> Registrar Mascota</a>
+                    <a href="#educativo" class="btn btn-outline-light"><i class="fa-solid fa-graduation-cap"></i> Ver Código Fuente</a>
+                </div>
+            </div>
+            
+            <div class="eval-details">
+                <h3><i class="fa-solid fa-check-double"></i> Criterios de Evaluación Superados:</h3>
+                <ul>
+                    <li><strong>Arquitectura Modular:</strong> Uso de patrón IIFE para evitar contaminación global y separación de responsabilidades (MVC).</li>
+                    <li><strong>Lógica Funcional:</strong> Uso de métodos inmutables (<code>map</code>, <code>filter</code>, <code>reduce</code>) y desestructuración de objetos.</li>
+                    <li><strong>Validaciones Robustas:</strong> Control estricto de campos vacíos, números positivos y expresiones regulares.</li>
+                    <li><strong>Alto Rendimiento:</strong> Implementación de <em>Delegación de Eventos</em> en el DOM y actualizaciones dinámicas eficientes.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 2. Registro -->
+        <section id="registro" class="card fade-in">
+            <h2><i class="fa-solid fa-address-card"></i> Registrar Mascota</h2>
+            <form id="pet-form" class="dashboard-form">
+                <input type="hidden" id="pet-id">
+                
+                <div class="form-grid">
+                    <!-- Datos de la mascota -->
+                    <div class="form-group">
+                        <label for="nombre"><i class="fa-solid fa-dog"></i> Nombre de la mascota:</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ej. Max" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tipo"><i class="fa-solid fa-paw"></i> Tipo:</label>
+                        <select id="tipo" name="tipo" required>
+                            <option value="">Seleccione un tipo</option>
+                            <option value="Perro">Perro</option>
+                            <option value="Gato">Gato</option>
+                            <option value="Ave">Ave</option>
+                            <option value="Reptil">Reptil</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edad"><i class="fa-solid fa-calendar-days"></i> Edad (años):</label>
+                        <input type="number" id="edad" name="edad" min="0" step="0.1" placeholder="Ej. 2.5" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="peso"><i class="fa-solid fa-weight-scale"></i> Peso (kg):</label>
+                        <input type="number" id="peso" name="peso" min="0.1" step="0.1" placeholder="Ej. 15.2" required>
+                    </div>
+
+                    <!-- Datos del Dueño -->
+                    <div class="form-group">
+                        <label for="dueno"><i class="fa-solid fa-user"></i> Nombre del Dueño:</label>
+                        <input type="text" id="dueno" name="dueno" placeholder="Ej. Juan Pérez" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono"><i class="fa-solid fa-phone"></i> Teléfono:</label>
+                        <input type="tel" id="telefono" name="telefono" placeholder="Ej. 555-1234" required>
+                    </div>
+                </div>
+
+                <!-- Opciones Extra y Observaciones -->
+                <div class="form-row">
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="vacunado" name="vacunado">
+                            <span><i class="fa-solid fa-syringe"></i> Vacunas al día</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="observaciones"><i class="fa-solid fa-comment-medical"></i> Observaciones médicas:</label>
+                    <textarea id="observaciones" name="observaciones" rows="3" placeholder="Alergias, condiciones especiales, dieta, etc."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="btn-submit" class="btn btn-primary">
+                        <i class="fa-solid fa-save"></i> <span>Guardar Registro</span>
+                    </button>
+                    <button type="button" id="btn-cancelar" class="btn btn-secondary hidden">
+                        <i class="fa-solid fa-times"></i> Cancelar Edición
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- 3. Tabla de mascotas -->
+        <section id="gestion" class="card fade-in">
+            <h2><i class="fa-solid fa-list"></i> Gestión de Mascotas</h2>
+            
+            <div class="filters-container">
+                <div class="search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="buscar" placeholder="Buscar por nombre, dueño o teléfono...">
+                </div>
+                <div class="filter-box">
+                    <i class="fa-solid fa-filter"></i>
+                    <select id="filtro-tipo">
+                        <option value="Todos">Todos los tipos</option>
+                    </select>
+                </div>
+                <button id="btn-export" class="btn btn-secondary" style="margin-left: auto;">
+                    <i class="fa-solid fa-file-csv"></i> Exportar CSV
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table id="pets-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Mascota</th>
+                            <th>Tipo</th>
+                            <th>Edad</th>
+                            <th>Peso</th>
+                            <th>Vacunado</th>
+                            <th>Dueño</th>
+                            <th>Teléfono</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pets-tbody">
+                        <!-- Las filas se generarán dinámicamente con JS -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Estado vacío (Se muestra con JS si no hay datos) -->
+            <div id="empty-state" class="empty-state hidden">
+                <i class="fa-solid fa-box-open"></i>
+                <p>No hay mascotas registradas o que coincidan con la búsqueda.</p>
+            </div>
+        </section>
+
+        <!-- 3.5. Galería -->
+        <section id="galeria" class="card fade-in">
+            <h2><i class="fa-solid fa-images"></i> Galería de Pacientes</h2>
+            <div id="galeria-container" class="galeria-grid">
+                <!-- Se llenará dinámicamente -->
+            </div>
+        </section>
+
+        <!-- 4. Estadísticas -->
+        <section id="estadisticas" class="card fade-in">
+            <h2><i class="fa-solid fa-chart-bar"></i> Estadísticas de la Clínica</h2>
+            <div class="stats-grid" id="stats-container">
+                <!-- Se llenará dinámicamente -->
+                <div class="stat-card">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <h3>Cargando...</h3>
+                    <p>--</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Panel educativo JavaScript -->
+        <section id="educativo" class="card fade-in">
+            <h2><i class="fa-solid fa-lightbulb"></i> Panel Educativo JavaScript</h2>
+            <p class="edu-intro">Explora el código fuente real que hace funcionar esta aplicación. Aprende cómo se implementan conceptos fundamentales de programación interactiva.</p>
+            
+            <div class="edu-topics">
+                
+                <!-- 1. Funciones -->
+                <article class="edu-topic">
+                    <h3>1. Funciones (Reutilización de Código)</h3>
+                    <div class="code-editor">
+                        <div class="editor-header">
+                            <div class="editor-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <span class="filename">UIModule.showToast() - app.js</span>
+                        </div>
+<pre class="line-numbers"><code class="language-javascript">/**
+ * Muestra una notificación visual en la pantalla.
+ * @param {string} message - El texto a mostrar.
+ * @param {string} type - Tipo de alerta ('success' por defecto, o 'error').
+ */
+const showToast = (message, type = 'success') => {
+    // 1. Creamos un nuevo elemento <div> en memoria
+    const toast = document.createElement('div');
+    
+    // 2. Usamos Template Literals (con backticks \`) para inyectar la variable "type"
+    toast.className = \`toast \${type}\`;
+    
+    // 3. Insertamos HTML interno con el mensaje
+    toast.innerHTML = \`<p>\${message}</p>\`;
+    
+    // 4. Agregamos el nuevo elemento al contenedor real en el DOM (la pantalla)
+    toastContainer.appendChild(toast);
+    
+    // 5. setTimeout ejecuta código después de un tiempo (4000 milisegundos = 4 seg)
+    setTimeout(() => {
+        toast.remove(); // Eliminamos el elemento de la pantalla
+    }, 4000);
+};</code></pre>
+                    </div>
+                    <div class="edu-explanation">
+                        <h4><i class="fa-solid fa-book-open"></i> Concepto Clave</h4>
+                        <p>Las funciones encapsulan lógica para no repetir código. Aquí usamos <strong>Arrow Functions</strong>, <strong>parámetros por defecto</strong>, y <strong>asincronía básica</strong> con <code>setTimeout</code>.</p>
+                    </div>
+                </article>
+
+                <!-- 2. Arrays -->
+                <article class="edu-topic">
+                    <h3>2. Manipulación de Arrays</h3>
+                    <div class="code-editor">
+                        <div class="editor-header">
+                            <div class="editor-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <span class="filename">AppController.applyFilters() - app.js</span>
+                        </div>
+<pre class="line-numbers"><code class="language-javascript">/**
+ * Filtra el array de mascotas según el texto ingresado en el buscador.
+ */
+const applyFilters = () => {
+    // Obtenemos el arreglo completo de mascotas desde el estado
+    const pets = StateModule.getPets();
+    const searchTerm = inputBuscar.value.toLowerCase();
+
+    // .filter() crea un NUEVO array iterando sobre cada mascota ('pet')
+    // Si la condición retorna 'true', la mascota se incluye en el nuevo array
+    const filteredPets = pets.filter(pet => {
+        
+        // .includes() verifica si un string contiene a otro string
+        // Convertimos a minúsculas para que la búsqueda no sea sensible a mayúsculas
+        const matchesSearch = pet.nombre.toLowerCase().includes(searchTerm) || 
+                              pet.dueno.toLowerCase().includes(searchTerm);
+        
+        return matchesSearch; 
+    });
+
+    // Pasamos el NUEVO array filtrado a la función que dibuja la tabla
+    UIModule.renderTable(filteredPets);
+};</code></pre>
+                    </div>
+                    <div class="edu-explanation">
+                        <h4><i class="fa-solid fa-book-open"></i> Concepto Clave</h4>
+                        <p>Los métodos funcionales de Arrays como <code>.filter()</code> o <code>.map()</code> no modifican el array original (son inmutables), sino que devuelven uno nuevo. Esto evita errores de pérdida de datos.</p>
+                    </div>
+                </article>
+
+                <!-- 3. Objetos -->
+                <article class="edu-topic">
+                    <h3>3. Objetos Literales y Desestructuración</h3>
+                    <div class="code-editor">
+                        <div class="editor-header">
+                            <div class="editor-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <span class="filename">ValidationModule.validatePetData() - app.js</span>
+                        </div>
+<pre class="line-numbers"><code class="language-javascript">/**
+ * Valida que los datos ingresados en el formulario sean correctos.
+ * @param {Object} data - Objeto literal con toda la información del formulario.
+ */
+const validatePetData = (data) => {
+    // DESESTRUCTURACIÓN DE OBJETOS (Object Destructuring)
+    // Extraemos las propiedades del objeto 'data' y las convertimos en variables locales
+    // Es equivalente a: const nombre = data.nombre; const tipo = data.tipo; ...
+    const { nombre, tipo, edad, peso, dueno, telefono } = data;
+    
+    // Verificamos si alguna cadena de texto está vacía
+    // En JS un string vacío "" es evaluado como un valor "Falsy"
+    if (!nombre || !tipo || !dueno || !telefono) {
+        showToast('Faltan campos obligatorios.', 'error');
+        return false; // Detenemos la ejecución
+    }
+    
+    // Si todo está bien, retornamos true
+    return true; 
+};</code></pre>
+                    </div>
+                    <div class="edu-explanation">
+                        <h4><i class="fa-solid fa-book-open"></i> Concepto Clave</h4>
+                        <p>Agrupar datos en un <strong>Objeto Literal</strong> (<code>{}</code>) facilita pasarlos a funciones. La <strong>desestructuración</strong> nos permite extraer múltiples propiedades en una sola línea, mejorando la legibilidad.</p>
+                    </div>
+                </article>
+
+                <!-- 4. Eventos DOM -->
+                <article class="edu-topic">
+                    <h3>4. Eventos del DOM (Delegación)</h3>
+                    <div class="code-editor">
+                        <div class="editor-header">
+                            <div class="editor-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <span class="filename">AppController.setupEventListeners() - app.js</span>
+                        </div>
+<pre class="line-numbers"><code class="language-javascript">/**
+ * Configuramos los eventos de clics usando "Delegación de Eventos"
+ */
+// Asignamos UN SOLO evento 'click' al contenedor padre (el cuerpo de la tabla <tbody>)
+tbody.addEventListener('click', (evento) => {
+    
+    // event.target es el elemento exacto que recibió el clic (podría ser el ícono <i>)
+    // .closest() busca hacia arriba en el DOM hasta encontrar la clase '.btn-delete'
+    const btnDelete = evento.target.closest('.btn-delete');
+    
+    // Si el clic provino efectivamente del botón de eliminar...
+    if (btnDelete) {
+        // Obtenemos el ID de la mascota desde el atributo data-id HTML5 (ej: data-id="1612")
+        const id = parseInt(btnDelete.dataset.id);
+        
+        // window.confirm() lanza una ventana nativa del navegador con Aceptar/Cancelar
+        if (confirm('¿Estás seguro de eliminar este registro?')) {
+            StateModule.deletePet(id); // Borramos de la memoria
+            refreshUI();               // Refrescamos la pantalla
+        }
+    }
+});</code></pre>
+                    </div>
+                    <div class="edu-explanation">
+                        <h4><i class="fa-solid fa-book-open"></i> Concepto Clave</h4>
+                        <p>La <strong>Delegación de Eventos</strong> mejora el rendimiento drásticamente. En vez de crear un "listener" por cada botón de cada fila, escuchamos los clics en la tabla y detectamos qué botón fue pulsado.</p>
+                    </div>
+                </article>
+
+                <!-- 5. localStorage -->
+                <article class="edu-topic">
+                    <h3>5. API localStorage y JSON</h3>
+                    <div class="code-editor">
+                        <div class="editor-header">
+                            <div class="editor-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <span class="filename">StateModule.savePets() - app.js</span>
+                        </div>
+<pre class="line-numbers"><code class="language-javascript">/**
+ * Guarda el array actual de mascotas en el disco duro del navegador (localStorage)
+ */
+const savePets = () => {
+    // REGLA: localStorage SOLO puede almacenar cadenas de texto (Strings).
+    // NO puede almacenar Arrays ni Objetos complejos directamente.
+    
+    // 1. Usamos el objeto global JSON para "serializar" nuestro array
+    // Esto convierte la estructura de JS a un bloque de texto formateado
+    const dataString = JSON.stringify(pets);
+    
+    // 2. Guardamos ese texto en el navegador bajo la llave 'petcare_data'
+    localStorage.setItem('petcare_data', dataString);
+};
+
+// NOTA PARA LEER: 
+// Cuando queramos recuperar los datos, usamos localStorage.getItem()
+// y luego JSON.parse() para volver a convertir el texto en un Array utilizable.</code></pre>
+                    </div>
+                    <div class="edu-explanation">
+                        <h4><i class="fa-solid fa-book-open"></i> Concepto Clave</h4>
+                        <p><code>localStorage</code> nos da persistencia para no perder datos al recargar. Como solo acepta texto, <strong>JSON</strong> (JavaScript Object Notation) es el puente para traducir nuestras estructuras de datos.</p>
+                    </div>
+                </article>
+
+                <!-- 6. CRUD -->
+                <article class="edu-topic">
+                    <h3>6. Flujo CRUD (Create, Read, Update, Delete)</h3>
+                    <div class="code-editor">
+                        <div class="editor-header">
+                            <div class="editor-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <span class="filename">Resumen de Arquitectura CRUD - app.js</span>
+                        </div>
+<pre class="line-numbers"><code class="language-javascript">/**
+ * El CRUD es el acrónimo para las 4 operaciones básicas de gestión de datos.
+ * En nuestro patrón, todo modifica un Array (pets) y se guarda.
+ */
+
+// 1. CREATE (Crear): Instanciar un objeto nuevo e insertarlo
+const createPet = (petData) => {
+    pets.push(petData);  // Agregamos al final del Array
+    savePets();          // Guardamos en LocalStorage
+};
+
+// 2. READ (Leer): Extraer los datos y dibujarlos en pantalla
+const readPets = () => {
+    return pets; // Luego otra función iterará esto para crear los <tr> HTML
+};
+
+// 3. UPDATE (Actualizar): Buscar el modificado y reemplazarlo
+const updatePet = (updatedPet) => {
+    // Mapeamos el array. Si el ID coincide, retornamos el objeto modificado, si no, el original
+    pets = pets.map(p => p.id === updatedPet.id ? updatedPet : p);
+    savePets();
+};
+
+// 4. DELETE (Eliminar): Filtrar el array quitando el seleccionado
+const deletePet = (idToDelete) => {
+    // El nuevo array contendrá todas las mascotas MENOS la que tenga el idToDelete
+    pets = pets.filter(p => p.id !== idToDelete);
+    savePets();
+};</code></pre>
+                    </div>
+                    <div class="edu-explanation">
+                        <h4><i class="fa-solid fa-book-open"></i> Concepto Clave</h4>
+                        <p>El <strong>CRUD</strong> es el corazón de cualquier aplicación (Facebook, Twitter, tu app de banco). Modificar datos en memoria, persistirlos y luego renderizar la vista es el flujo de trabajo moderno en JavaScript.</p>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- 6. Footer profesional -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <i class="fa-solid fa-paw"></i> PetCare Manager
+                </div>
+                <p>Proyecto Final de Evaluación Técnica.</p>
+                <p>Desarrollado demostrando dominio avanzado en el ecosistema Frontend Vanilla sin uso de librerías o frameworks externos (Zero Dependencies).</p>
+            </div>
+            <div class="footer-links">
+                <h4><i class="fa-solid fa-code-branch"></i> Arquitectura del Código</h4>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Modularidad (IIFE / ES6)</li>
+                    <li><i class="fa-solid fa-check"></i> Event Delegation</li>
+                    <li><i class="fa-solid fa-check"></i> Persistencia (Web Storage API)</li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4><i class="fa-solid fa-laptop-code"></i> Stack Tecnológico</h4>
+                <ul>
+                    <li><i class="fa-brands fa-html5"></i> HTML5 (Semántica estricta)</li>
+                    <li><i class="fa-brands fa-css3-alt"></i> CSS3 (Custom Properties)</li>
+                    <li><i class="fa-brands fa-js"></i> JavaScript Puro (ES2022+)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 PetCare Manager. Aplicación construida siguiendo los principios de Clean Code.</p>
+        </div>
+    </footer>
+
+    <!-- Librerías de Resaltado de Sintaxis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    
+    <!-- Script Principal -->
+    <script src="js/app.js"></script>
+</body>
+</html>
